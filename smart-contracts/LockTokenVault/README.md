@@ -13,6 +13,11 @@ The `recipient` can:
 
 ## Creating the Contract
 
+### Compiler Version
+```text
+v2.0.0
+```
+
 ### Hash
 
 ```text
