@@ -5,7 +5,7 @@ A contract used to lock standard token. The contract is capable to hold differen
 The `sender` can:
 
 - create a lock and specify the `recipient` and unlock date of the lock.
-- revoke the lock anytime as long as the recipient doesn't claim it yet regardles if the unlock date has been elapsed.
+- revoke the lock anytime as long as the recipient doesn't claim it yet regardless if the unlock date has been elapsed.
 - refund the standard token after revoking the lock.
 
 The `recipient` can:
