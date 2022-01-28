@@ -1,0 +1,30 @@
+﻿@namespace Client.App.Pages.MyLocks.Modals
+
+<EditForm Model="@Model" OnValidSubmit="ClaimAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h5">
+                <MudIcon Icon="@Icons.Material.Filled.Check" Class="mr-3 mb-n1" />
+                Claim Lock Confirmation
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudText>This may take a while...</MudText>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" OnClick="Cancel">Cancel</MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Primary">
+                @if (IsProcessing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                }
+                else
+                {
+                    <MudText>Claim</MudText>
+                }
+            </MudButton>
+
+        </DialogActions>
+    </MudDialog>
+</EditForm>

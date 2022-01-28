@@ -1,0 +1,21 @@
+{
+  "IsEncrypted": false,
+  "ConnectionStrings": {
+    "DataDbContext": ""
+  },
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "JwtAudience": "RingletBoxUsers",
+    "JwtIssuer": "WebApi",
+    "JwtSecret": "0bhi3xvw7j7o8dyhcnh0bhn604cw1dtacylyjd35t1pguivpc6graj8fgfkfuvrb",
+    "AzureStorageAccount": "",
+    "AzureWebJobsStorage": "",
+    "CirrusNodeApiEndpoint": "http://mecodes-cirrus-node-privatenet.westeurope.cloudapp.azure.com",
+    "PartitionKey": "PrivateNet",
+    "LockContractAddress": "PEcYzjQhekfk7Sryn7P5YQ1TqUfJmWM5c2"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
+  }
+}

@@ -1,0 +1,52 @@
+﻿@namespace Client.App.Pages.MyLocks.Modals
+
+<EditForm Model="@Model" OnValidSubmit="CreateAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h5">
+                <MudIcon Icon="@Icons.Material.Filled.Lock" Class="mr-3 mb-n1" />
+                Add New Lock
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.Sender)" ReadOnly @bind-Value="Model.Sender" Label="Sender" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.TokenContractAddress)" ReadOnly @bind-Value="Model.TokenContractAddress" Label="Token Contract Address" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.TokenInfo)" ReadOnly @bind-Value="Model.TokenInfo" Label="Token Balance" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.RecipientAddress)" Disabled="IsProcessing" @bind-Value="Model.RecipientAddress" Label="Recipient Address" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudDatePicker For="@(() => Model.UnlockDate)" Disabled="IsProcessing" MinDate="@(DateTime.Now.AddDays(1))" @bind-Date="Model.UnlockDate" Label="Unlock Date"  />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="long" For="@(() => Model.TotalAmount)" Disabled="IsProcessing" @bind-Value="Model.TotalAmount" Label="Amount" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                  <MudCheckBox For="@(() => Model.IsRevocable)" Disabled="IsProcessing" @bind-Checked="@Model.IsRevocable" Color="Color.Primary" Label="Revocable?"></MudCheckBox>
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" OnClick="Cancel">Cancel</MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Primary">
+                @if (IsProcessing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                }
+                else
+                {
+                    <MudText>Add</MudText>
+                }
+            </MudButton>
+
+        </DialogActions>
+    </MudDialog>
+</EditForm>

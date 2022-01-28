@@ -1,0 +1,20 @@
+﻿@namespace Client.App.Shared.Components
+
+<MudCard Elevation="0" Square="true" Class="@Class">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <MudAvatar Size="Size.Large" Color="Color.Primary">@AvatarText</MudAvatar>
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+         
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" OnClick="Logout" Color="Color.Inherit" />
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="Typo.body1" GutterBottom="false"><b>@WalletName</b></MudText>
+        <MudText Typo="Typo.subtitle2">@Address</MudText>
+        <MudText Typo="Typo.subtitle2">@Balance</MudText>
+    </MudCardContent>
+</MudCard>

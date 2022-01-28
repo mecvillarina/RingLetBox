@@ -1,0 +1,126 @@
+﻿@page "/home"
+@page "/"
+
+@namespace Client.App.Pages.Content
+
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudGrid>
+        @*<MudItem xs="12" sm="12" md="12">
+            <div class="d-flex justify-center mt-4">
+            <img src="@CustomIcons.AppLogo" width="250" height="240" />
+            </div>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12">
+            <MudText Align="Align.Center" Typo="Typo.h2">Welcome to RingLetBox</MudText>
+            <MudText Align="Align.Center" Typo="Typo.h3">Token Creation, Vesting, and Locking Platform on Stratis.</MudText>
+            </MudItem>*@
+        <MudItem xs="12">
+            <MudPaper Elevation="2" Class="pa-4 d-flex">
+                <MudAvatar Class="flex-grow-0 flex-shrink-1 align-self-center ma-4" Size="Size.Large" Image="@CustomIcons.AppLogo" />
+
+                <div Class="flex-grow-1 flex-shrink-0 align-self-center ml-2">
+                    <MudText Typo="Typo.h4">Welcome to RingLetBox</MudText>
+                    <MudText Typo="Typo.body1">Token Creation, Vesting, and Locking Platform on Stratis.</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudCard Elevation="2" Class="px-4 py-2">
+                <MudCardHeader Style="padding: 16px 16px 0px">
+                    <MudPaper Elevation="0" class="d-flex">
+                        <MudIcon Class="align-self-center" Icon="@Icons.Material.Filled.GeneratingTokens" Color="Color.Primary" />
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.h6">Total Token</MudText>
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.caption"><b>(Created)</b></MudText>
+                    </MudPaper>
+                </MudCardHeader>
+                <MudCardContent Style="padding: 8px 16px 16px">
+                    <MudText Typo="Typo.h4">@TotalCreatedTokens</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" sm="4">
+            <MudCard Elevation="2" Class="px-4 py-2">
+                <MudCardHeader Style="padding: 16px 16px 0px">
+                    <MudPaper Elevation="0" class="d-flex">
+                        <MudIcon Class="align-self-center" Icon="@Icons.Material.Filled.GeneratingTokens" Color="Color.Primary" />
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.h6"> Total Token</MudText>
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.caption"><b>(Added & Created)</b></MudText>
+                    </MudPaper>
+                </MudCardHeader>
+                <MudCardContent Style="padding: 8px 16px 16px">
+                    <MudText Typo="Typo.h4">@TotalTokens</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" sm="4">
+            <MudCard Elevation="2" Class="px-4 py-2">
+                <MudCardHeader Style="padding: 16px 16px 0px">
+                    <MudPaper Elevation="0" class="d-flex">
+                        <MudIcon Class="align-self-center" Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" />
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.h6">Token Locks</MudText>
+                    </MudPaper>
+                </MudCardHeader>
+                <MudCardContent Style="padding: 8px 16px 16px">
+                    <MudText Typo="Typo.h4">@TotalTokenLocks</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudCard Elevation="2" Class="px-4 py-2">
+                <MudCardHeader Style="padding: 16px 16px 0px">
+                    <MudPaper Elevation="0" class="d-flex">
+                        <MudIcon Class="align-self-center" Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" />
+                        <MudText Class="ml-2 align-self-center" Typo="Typo.h6">Recently Created Token</MudText>
+                    </MudPaper>
+                </MudCardHeader>
+                <MudCardContent Style="padding: 8px 16px 16px">
+                    <MudTable Hover="true" Elevation="0" Items="Tokens" Dense="true" Bordered="false" Striped="true" RowsPerPage="10">
+                        <ColGroup>
+                            <col style="width: 10%;" />
+                            <col style="width: 20%;" />
+                            <col style="width: 10%;" />
+                            <col style="width: 20%;" />
+                            <col style="width: 30%;" />
+                            <col style="width: 10%;" />
+                        </ColGroup>
+                        <HeaderContent>
+                            <MudTh><MudText Typo="Typo.body2"><b>Symbol</b></MudText></MudTh>
+                            <MudTh><MudText Typo="Typo.body2"><b>Name</b></MudText></MudTh>
+                            <MudTh><MudText Typo="Typo.body2"><b>Decimal</b></MudText></MudTh>
+                            <MudTh><MudText Typo="Typo.body2"><b>Total Supply</b></MudText></MudTh>
+                            <MudTh><MudText Typo="Typo.body2"><b>Creator</b></MudText></MudTh>
+                            <MudTh><MudText Typo="Typo.body2"><b></b></MudText></MudTh>
+                            @*<MudTh><MudText Typo="Typo.body2" Align="Align.Right"><b>Actions</b></MudText></MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd>
+                                <MudHighlighter Text="@context.Symbol" />
+                            </MudTd>
+                            <MudTd>
+                                <MudHighlighter Text="@context.Name" />
+                            </MudTd>
+                            <MudTd>
+                                <MudHighlighter Text="@context.Decimal.ToString()" />
+                            </MudTd>
+                            <MudTd>
+                                <MudHighlighter Text="@context.TotalSupply.ToString("N0")" />
+                            </MudTd>
+                            <MudTd>
+                                <MudHighlighter Text="@context.Sender" />
+                            </MudTd>
+                            <MudTd Style="text-align: right">
+                                <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Primary"></MudIconButton>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <div style="margin:50px"></div>
+    </MudGrid>
+</MudContainer>

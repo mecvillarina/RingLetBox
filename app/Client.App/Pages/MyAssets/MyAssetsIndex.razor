@@ -1,0 +1,84 @@
+﻿@page "/my-assets"
+
+@namespace Client.App.Pages.MyAssets
+
+@attribute [Authorize]
+
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+@if (!IsLoaded)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="36px" />
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="300px" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Class="mx-2" Width="100%" Height="36px" />
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <FeatureTitle Title="My Assets" Description="Manage your assets." />
+
+    <MudTable @ref="table" ServerData="@(new Func<TableState, Task<TableData<HolderStandardTokenItemModel>>>(ServerReload))" Hover="true" Elevation="25" Dense="false" Bordered="false" Striped="true" RowsPerPage="100">
+        <ToolBarContent>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <div class="justify-center mud-text-align-center">
+                    <MudButton DisableElevation Class="mr-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => InvokeCreateTokenModal())">Create New Token</MudButton>
+                    <MudButton DisableElevation Class="mr-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => InvokeAddTokenModal())">Add Token</MudButton>
+                </div>
+            </MudHidden>
+            <MudSpacer />
+            <MudTextField T="string" ValueChanged="@(s => GetDataAsync(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3"></MudTextField>
+        </ToolBarContent>
+        <ColGroup>
+            <col style="width: 10%;" />
+            <col style="width: 30%;" />
+            <col style="width: 30%;" />
+            <col style="width: 20%;" />
+            <col style="width: 10%;" />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh><MudText Typo="Typo.body2"><b>Symbol</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Name</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Contract Address</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Balance</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2" Align="Align.Right"><b>Actions</b></MudText></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Symbol">
+                <MudHighlighter Text="@context.Symbol" HighlightedText="@SearchString" />
+            </MudTd>
+            <MudTd DataLabel="Name">
+                <MudHighlighter Text="@context.Name" HighlightedText="@SearchString" />
+            </MudTd>
+            <MudTd DataLabel="Contract Address">
+                <MudHighlighter Text="@context.ContractAddress" HighlightedText="@SearchString" />
+            </MudTd>
+            <MudTd DataLabel="Balance">
+                <MudHighlighter Text="@context.Balance.ToString("N0")" />
+            </MudTd>
+            <MudTd DataLabel="Actions" Style="text-align: right">
+                <MudMenu Variant="Variant.Filled" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                    <MudMenuItem OnClick="@(() => InvokeCreateNewLockModal(context))">Add New Lock</MudMenuItem>
+                </MudMenu>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+}
+

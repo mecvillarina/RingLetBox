@@ -1,0 +1,125 @@
+﻿@page "/auth"
+
+@namespace Client.App.Pages.Authentication
+
+@layout AuthLayout
+
+@attribute [AllowAnonymous]
+
+
+@if (!IsLoaded)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <div class="d-flex justify-center">
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Width="100" Height="100" />
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <div>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="24" />
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="24" />
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="150" />
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <div class="d-flex justify-center">
+                <img src="@CustomIcons.AppLogo" width="100" height="96" />
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <div>
+                <MudText Typo="Typo.h4" Align="Align.Center">RingLetBox</MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center">Login your wallet</MudText>
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <MudTabs Elevation="0" Centered="true" Color="@Color.Transparent" @ref="tabs" ActivePanelIndexChanged="@OnActivePanelIndexChanged">
+                @if (IsLoginTabVisible)
+                {
+                    <MudTabPanel Text="LOGIN WALLET">
+                        <EditForm Model="@LoginModel" OnValidSubmit="LoginAsync">
+                            <FluentValidationValidator @ref="LoginFluentValidationValidator" />
+                            <MudGrid Class="mt-2">
+                                @if (WalletList.Any())
+                                {
+                                    <MudItem xs="12">
+                                        <MudSelect T="string" Label="Wallet Name" Variant="Variant.Outlined" MultiSelection="false" @bind-Value="LoginModel.Name">
+                                            @foreach (string wallet in WalletList)
+                                            {
+                                                <MudSelectItem Value="@wallet">@wallet</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                }
+
+                                <MudItem xs="12">
+                                    <MudTextField Label="Password" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="LoginModel.Password" For="@(() => LoginModel.Password)"
+                                          InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                                </MudItem>
+                                <MudItem xs="12" Class="d-flex justify-center">
+                                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="@IsProcessing" Color="Color.Primary" Size="Size.Large" Style="width: 100%;">
+                                        @if (IsProcessing)
+                                        {
+                                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                        }
+                                        else
+                                        {
+                                            <MudText>Sign In</MudText>
+                                        }
+                                    </MudButton>
+                                </MudItem>
+                            </MudGrid>
+                        </EditForm>
+                    </MudTabPanel>
+                }
+
+                <MudTabPanel Text="RESTORE WALLET">
+                    <EditForm Model="@RecoverModel" OnValidSubmit="RecoverAsync">
+                        <FluentValidationValidator @ref="RecoverFluentValidationValidator" />
+                        <MudGrid Class="mt-2">
+                            <MudItem xs="12">
+                                <MudTextField T="string" Label="Name" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="RecoverModel.Name" For="@(() => RecoverModel.Name)" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField T="string" Label="Secret Words (Mnemonic)" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="RecoverModel.Mnemonic" For="@(() => RecoverModel.Mnemonic)" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField Label="Password" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          @bind-Value="RecoverModel.Password" For="@(() => RecoverModel.Password)"
+                                          InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField T="string" Label="Passphrase" Variant="Variant.Outlined" Disabled="IsProcessing"
+                                          InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility"
+                                          @bind-Value="RecoverModel.Passphrase" For="@(() => RecoverModel.Passphrase)" />
+                            </MudItem>
+                            <MudItem xs="12" Class="d-flex justify-center">
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="@IsProcessing" Color="Color.Primary" Size="Size.Large" Style="width: 100%;">
+                                    @if (IsProcessing)
+                                    {
+                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                    }
+                                    else
+                                    {
+                                        <MudText>Restore</MudText>
+                                    }
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                </MudTabPanel>
+            </MudTabs>
+        </MudItem>
+    </MudGrid>
+}

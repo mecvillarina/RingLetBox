@@ -1,0 +1,47 @@
+﻿@namespace Client.App.Pages.MyAssets.Modals
+
+<EditForm Model="@Model" OnValidSubmit="CreateAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h5">
+                <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+                Create new token
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudText Typo="Typo.subtitle1">Estimated Fee: &lt; 1 TCRS</MudText> 
+                </MudItem>
+
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.Name)" Disabled="IsProcessing" @bind-Value="Model.Name" Label="Name" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" For="@(() => Model.Symbol)" Disabled="IsProcessing" @bind-Value="Model.Symbol" Label="Symbol" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="long" For="@(() => Model.TotalSupply)" Disabled="IsProcessing" @bind-Value="Model.TotalSupply" Label="Total Supply" InputType="InputType.Number" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="int" For="@(() => Model.Decimal)" Disabled="IsProcessing" @bind-Value="Model.Decimal" Label="Decimal" InputType="InputType.Number" />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" OnClick="Cancel">Cancel</MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" Disabled="IsProcessing" ButtonType="ButtonType.Submit" Color="Color.Primary">
+                @if (IsProcessing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                }
+                else
+                {
+                    <MudText>Create</MudText>
+                }
+            </MudButton>
+
+        </DialogActions>
+    </MudDialog>
+</EditForm>

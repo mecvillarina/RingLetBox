@@ -1,0 +1,20 @@
+﻿@namespace Client.App.Shared.Components
+
+<img src="@CustomIcons.AppLogo" width="50" height="50" />
+<MudText Typo="Typo.h6" Color="Color.Primary" Class="ml-4">RingLetBox</MudText>
+<MudSpacer />
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudChip Class="ml-1" Color="Color.Secondary">@Balance</MudChip>
+</MudHidden>
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <MudChip Class="ml-1" Color="Color.Secondary">@Address</MudChip>
+</MudHidden>
+<MudMenu Class="ml-3" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Variant="Variant.Filled" Color="Color.Primary">
+    <ActivatorContent>
+        <MudChip Color="Color.Primary" Icon="@Icons.Material.Filled.AccountBalanceWallet">@WalletName</MudChip>
+    </ActivatorContent>
+    <ChildContent>
+        <MudMenuItem OnClick="@(() => SwitchWalletAddress())">Switch Wallet Address</MudMenuItem>
+        <MudMenuItem OnClick="@(() => Logout())">Signout</MudMenuItem>
+    </ChildContent>
+</MudMenu>

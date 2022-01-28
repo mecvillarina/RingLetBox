@@ -1,0 +1,15 @@
+﻿@using Domain.Enums
+@using Application.Common.Extensions
+
+@namespace Client.App.Pages.Wallet.Modals
+
+<MudDialog Style="max-height: 80vh; overflow-y: scroll">
+    <DialogContent>
+        <div class="d-flex flex-column py-1">
+            @foreach (var address in Addresses)
+            {
+                <MudButton OnClick=@(() => Select(address.Address))><span>@address.Address (@(address.AmountConfirmed / ClientConstants.SatoshiDivider) TCRS)</span></MudButton>
+            }
+        </div>
+    </DialogContent>
+</MudDialog>

@@ -1,0 +1,129 @@
+﻿@page "/my-locks"
+
+@namespace Client.App.Pages.MyLocks
+
+@attribute [Authorize]
+
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+@if (!IsLoaded)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="36px" />
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Width="100%" Height="300px" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Class="mx-2" Width="100%" Height="36px" />
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <FeatureTitle Title="Manage your Locks" />
+
+    <MudTable @ref="table" ServerData="@(new Func<TableState, Task<TableData<LockTransactionWithTypeDto>>>(ServerReload))" Hover="true" Elevation="25" Dense="false" Bordered="false" Striped="true" RowsPerPage="100">
+        <ColGroup>
+            <col style="width: 5%;" />
+            <col style="width: 5%;" />
+            <col style="width: 15%;" />
+            <col style="width: 10%;" />
+            <col style="width: 10%;" />
+            <col style="width: 10%;" />
+            <col style="width: 15%;" />
+            <col style="width: 10%;" />
+            <col style="width: 10%;" />
+            <col style="width: 10%;" />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh><MudText Typo="Typo.body2"><b>Lock #</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Role</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Token Contract</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Sender</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Receiver</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Unlocked Date</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Total Amount</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Revocable</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2"><b>Status</b></MudText></MudTh>
+            <MudTh><MudText Typo="Typo.body2" Align="Align.Right"><b>Actions</b></MudText></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Lock #">
+                <MudHighlighter Text="@((context.LockTransactionIndex + 1).ToString())" />
+            </MudTd>
+            <MudTd DataLabel="Role">
+                @{
+                    if (context.Type == "Sender")
+                    {
+                    <MudChip Color="Color.Primary">Sender</MudChip>
+                    }
+                    else
+                    {
+                    <MudChip Color="Color.Info">Receiver</MudChip>
+                    }
+            }
+        </MudTd>
+        <MudTd DataLabel="Receiver">
+            <MudHighlighter Text="@context.TokenAddress" />
+        </MudTd>
+        <MudTd DataLabel="Sender">
+            <MudHighlighter Text="@context.InitiatorAddress" />
+        </MudTd>
+        <MudTd DataLabel="Receiver">
+            <MudHighlighter Text="@context.RecipientAddress" />
+        </MudTd>
+        <MudTd DataLabel="Unlocked Date">
+            <MudHighlighter Text="@context.ClaimedDate.ToCurrentTimeZone().ToString(ClientConstants.LongDateTimeFormat)" />
+        </MudTd>
+        <MudTd DataLabel="Total Amount">
+            <MudHighlighter Text="@context.Amount" />
+        </MudTd>
+        <MudTd DataLabel="Revocable">
+            <MudHighlighter Text="@((context.IsRevocable ? "YES" : "NO"))" />
+        </MudTd>
+        <MudTd DataLabel="Status">
+            @{
+                    if (context.Status == "LOCKED")
+                    {
+                    <MudChip Color="Color.Primary">@context.Status</MudChip>
+                    }
+                    else
+                    {
+                    <MudChip Color="Color.Secondary">@context.Status</MudChip>
+                    }
+            }
+        </MudTd>
+        <MudTd DataLabel="Actions" Style="text-align: right">
+            @{
+                    if (context.Type == "Sender")
+                    {
+                    <MudMenu Variant="Variant.Filled" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                        <MudMenuItem Disabled="@(!(context.IsActive && !context.IsRevoked && context.IsRevocable))" OnClick="@(() => InvokeRevokeLockModal(context))">Revoke Lock</MudMenuItem>
+                        <MudMenuItem Disabled="@(!(context.IsRevoked && !context.IsRefunded))" OnClick="@(() => InvokeRefundRevokedLockModal(context))">Refund</MudMenuItem>
+                    </MudMenu>
+                    }
+                    else
+                    {
+                    <MudMenu Variant="Variant.Filled" DisableElevation="true" Icon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                        <MudMenuItem Disabled="@(!(context.IsActive && !context.IsRevoked && DateTime.UtcNow >= context.ClaimedDate))" OnClick="@(() => InvokeClaimLockModal(context))">Claim</MudMenuItem>
+                    </MudMenu>
+                    }
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+}
+

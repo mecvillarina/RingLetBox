@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+
+@namespace Client.App.Shared
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> localizer
+
+<MudThemeProvider Theme="_currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+@if (_isAuthenticated)
+{
+    <span hidden>@(LoadDataAsync())</span>
+    <MudLayout>
+        <MudAppBar Elevation="0" Style="@($"background:{Colors.Shades.White};")">
+            <MyAppBarContent />
+        </MudAppBar>
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="0" Variant="@DrawerVariant.Mini" ClipMode="DrawerClipMode.Always">
+            <MudNavMenu>
+                <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
+                <MudNavLink Href="/my-assets" Match="NavLinkMatch.All" Icon="@Icons.Filled.MonetizationOn">My Assets</MudNavLink>
+                <MudNavLink Href="/my-locks" Match="NavLinkMatch.All" Icon="@Icons.Filled.Lock">My Locks</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+                @Body
+            </MudContainer>
+        </MudMainContent>
+    </MudLayout>
+}
+else
+{
+    @Body
+}
